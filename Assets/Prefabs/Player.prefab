@@ -59,7 +59,13 @@ MonoBehaviour:
   _rotateSpeed: 5
   _spurtDistance: 3
   _hittedTime: 3
-  _idleColor: {r: 1, g: 1, b: 1, a: 1}
+  _idleColorVariants:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0.6, g: 1, b: 0.49803922, a: 1}
+  - {r: 0, g: 0.972549, b: 1, a: 1}
+  - {r: 1, g: 0.7137255, b: 0.7176471, a: 1}
+  - {r: 0.78431374, g: 0.56078434, b: 0.56078434, a: 1}
+  - {r: 0.85882354, g: 0.4117647, b: 1, a: 1}
   _hittedColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!65 &2986988551464100182
 BoxCollider:

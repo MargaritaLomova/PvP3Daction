@@ -1,5 +1,6 @@
 using Mirror;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : NetworkBehaviour
@@ -26,7 +27,7 @@ public class PlayerController : NetworkBehaviour
     [Space]
     [Header("Colors")]
     [SerializeField]
-    private Color _idleColor;
+    private List<Color> _idleColorVariants = new List<Color>();
     [SerializeField]
     private Color _hittedColor;
 
@@ -43,9 +44,12 @@ public class PlayerController : NetworkBehaviour
 
     private Transform _mainCamera;
 
+    private Color _idleColor;
+
     private void Start()
     {
         _mainCamera = Camera.main.transform;
+        _idleColor = _idleColorVariants[Random.Range(0, _idleColorVariants.Count)];
 
         Cursor.lockState = CursorLockMode.Locked;
     }
