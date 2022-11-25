@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : NetworkBehaviour
+public class PlayerCharacterController : NetworkBehaviour
 {
     [Header("Components")]
     [SerializeField]
@@ -12,6 +12,8 @@ public class PlayerController : NetworkBehaviour
     private Transform _model;
     [SerializeField]
     private SkinnedMeshRenderer _meshRenderer;
+    [SerializeField]
+    private Transform _mainCamera;
 
     [Space]
     [Header("Variables")]
@@ -42,14 +44,12 @@ public class PlayerController : NetworkBehaviour
 
     private Vector3 _direction;
 
-    private Transform _mainCamera;
-
     private Color _idleColor;
 
     private void Start()
     {
-        _mainCamera = Camera.main.transform;
         _idleColor = _idleColorVariants[Random.Range(0, _idleColorVariants.Count)];
+        SetColor(_idleColor);
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -77,6 +77,8 @@ public class PlayerController : NetworkBehaviour
 
             if (_direction.magnitude >= 0.1f)
             {
+                Debug.Log(name);
+
                 _targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _mainCamera.eulerAngles.y;
 
                 Move();
@@ -118,14 +120,19 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    private void SetColor(Color color)
+    {
+        foreach (var material in _meshRenderer.materials)
+        {
+            material.color = color;
+        }
+    }
+
     private IEnumerator ChangeColorToHitted()
     {
         IsHitted = true;
 
-        foreach (var material in _meshRenderer.materials)
-        {
-            material.color = _hittedColor;
-        }
+        SetColor(_hittedColor);
 
         float passedTime = 0f;
         while (passedTime < _hittedTime)
@@ -134,10 +141,7 @@ public class PlayerController : NetworkBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        foreach (var material in _meshRenderer.materials)
-        {
-            material.color = _idleColor;
-        }
+        SetColor(_idleColor);
 
         IsHitted = false;
     }
